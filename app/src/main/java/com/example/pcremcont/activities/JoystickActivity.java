@@ -52,13 +52,7 @@ public class JoystickActivity extends AppCompatActivity
             @Override
             public void onMove(int angle, int strength)
             {
-
-
-
-
                 sendMessage("1@"+String.valueOf(joystickRight.getNormalizedX()-50)+"#"+String.valueOf(joystickRight.getNormalizedY()-50));
-
-
             }
         });
     }
