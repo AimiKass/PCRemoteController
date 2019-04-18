@@ -12,4 +12,6 @@
     <string name="previous">previous</string>
     <string name="play_pause">play/pause</string>
     <string name="speak">Speak !</string>
+    <string name="close_server">Close Server</string>
+    <string name="port">Port</string>
 </resources>
