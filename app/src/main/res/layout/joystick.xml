@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/joystickView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+    <io.github.controlwear.virtual.joystick.android.JoystickView xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/joystickView_right"
+        android:layout_width="330dp"
+        android:layout_height="303dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="64dp"
+        android:layout_marginRight="-49dp"
+        android:layout_marginBottom="15dp"
+        custom:JV_backgroundColor="#009688"
+        custom:JV_borderColor="#00796B"
+        custom:JV_borderWidth="8dp"
+        custom:JV_buttonColor="#FF6E40" />
+
+    <Button
+        android:id="@+id/joystick_left_btn"
+        android:layout_width="184dp"
+        android:layout_height="81dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="168dp"
+        android:text="left click" />
+
+    <Button
+        android:id="@+id/joystick_right_btn"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="254dp"
+        android:layout_marginEnd="221dp"
+        android:text="right click" />
+
+</RelativeLayout>
