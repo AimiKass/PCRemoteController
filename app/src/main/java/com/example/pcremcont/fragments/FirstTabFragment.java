@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
@@ -21,6 +23,7 @@ public class FirstTabFragment extends Fragment
     Button playPauseButton , previousButton , nextButton;
     SeekBar seekBar;
     Switch muteUnmute;
+    EditText editTextSpeak;
 
     public FirstTabFragment()
     {
@@ -45,7 +48,8 @@ public class FirstTabFragment extends Fragment
         previousButton = view.findViewById(R.id.previousBtn);
         nextButton = view.findViewById(R.id.nextBtn);
         seekBar = view.findViewById(R.id.seekBar);
-        muteUnmute =view.findViewById(R.id.muteUnmute);
+        muteUnmute = view.findViewById(R.id.muteUnmute);
+        editTextSpeak = view.findViewById(R.id.editTextSpeak);
     }
 
 
@@ -70,13 +74,37 @@ public class FirstTabFragment extends Fragment
             @Override
             public void onStartTrackingTouch(SeekBar seekBar)
             {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar)
             {
                 sendMessage("2@"+(65535 * progressValue)/100);
+            }
+        });
+
+
+        muteUnmute.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                sendMessage("3@");
+            }
+        });
+
+
+        editTextSpeak.setOnKeyListener(new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
+                {
+                    sendMessage("7@"+editTextSpeak.getText().toString());
+                    return true;
+                }
+                return false;
             }
         });
 

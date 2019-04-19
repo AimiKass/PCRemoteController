@@ -1,7 +1,11 @@
 package com.example.pcremcont.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -14,8 +18,9 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 public class JoystickActivity extends AppCompatActivity
 {
 
-
+    // TODO: 4/18/2019 add scroll wheel
     Button leftClickBtn , rightClickButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,7 +57,8 @@ public class JoystickActivity extends AppCompatActivity
             @Override
             public void onMove(int angle, int strength)
             {
-                sendMessage("1@"+String.valueOf(joystickRight.getNormalizedX()-50)+"#"+String.valueOf(joystickRight.getNormalizedY()-50));
+                sendMessage("1@"+ (joystickRight.getNormalizedX() - 50) +"#"+ (joystickRight.getNormalizedY() - 50));
+
             }
         });
     }

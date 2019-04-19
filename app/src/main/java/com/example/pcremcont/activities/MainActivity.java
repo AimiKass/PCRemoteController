@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.AddFragment(new FirstTabFragment(),"sound");
-        adapter.AddFragment(new SecondTabFragment(),"general");
-        adapter.AddFragment(new ThirdTabFragment(),"cmd");
+        adapter.AddFragment(new SecondTabFragment(),"set_on/off");
+        adapter.AddFragment(new ThirdTabFragment(),"(Under_const)");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
