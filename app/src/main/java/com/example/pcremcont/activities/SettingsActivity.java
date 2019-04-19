@@ -15,6 +15,9 @@ public class SettingsActivity extends AppCompatActivity
     ImageButton returnBtn;
     Button closeServerBtn;
 
+    private static final String splitCharacter = "@";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -30,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                sendMessage("0@");
+                sendMessage("0"+splitCharacter);
             }
         });
 

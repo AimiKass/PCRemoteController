@@ -24,6 +24,9 @@ public class SecondTabFragment extends Fragment
     EditText editTextMinTillMonOff , editTextMinTillPCOff;
     Button shutdownBtn , restartBtn;
 
+    private static final String splitCharacter = "@";
+
+
     public SecondTabFragment()
     {
 
@@ -62,9 +65,9 @@ public class SecondTabFragment extends Fragment
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
                 if (isChecked)
-                    sendMessage("8@");
+                    sendMessage("8"+splitCharacter);
                 else
-                    sendMessage("81@");
+                    sendMessage("81"+splitCharacter);
             }
         });
 
@@ -75,7 +78,7 @@ public class SecondTabFragment extends Fragment
             {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
                 {
-                    sendMessage("12@"+(Integer.parseInt(editTextMinTillPCOff.getText().toString()) * 60));
+                    sendMessage("12"+splitCharacter+(Integer.parseInt(editTextMinTillPCOff.getText().toString()) * 60));
                     editTextMinTillPCOff.getText().clear();
                     return true;
                 }
@@ -91,7 +94,7 @@ public class SecondTabFragment extends Fragment
             {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER) )
                 {
-                    sendMessage("9@"+Integer.parseInt((editTextMinTillMonOff.getText().toString()))*10000);
+                    sendMessage("9"+splitCharacter+Integer.parseInt((editTextMinTillMonOff.getText().toString()))*10000);
                     editTextMinTillMonOff.getText().clear();
                     return true;
                 }
@@ -106,7 +109,7 @@ public class SecondTabFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                sendMessage("12@");
+                sendMessage("12"+splitCharacter);
             }
         });
 
@@ -115,7 +118,7 @@ public class SecondTabFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                sendMessage("11@");
+                sendMessage("11"+splitCharacter);
             }
         });
 
