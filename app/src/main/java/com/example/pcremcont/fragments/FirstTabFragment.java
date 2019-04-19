@@ -96,6 +96,30 @@ public class FirstTabFragment extends Fragment
             }
         });
 
+        playPauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage("4"+splitCharacter);
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                sendMessage("6"+splitCharacter);
+            }
+        });
+
+        previousButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                sendMessage("5"+splitCharacter);
+            }
+        });
 
         editTextSpeak.setOnKeyListener(new View.OnKeyListener()
         {
