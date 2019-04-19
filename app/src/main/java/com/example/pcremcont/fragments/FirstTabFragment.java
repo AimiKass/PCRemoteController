@@ -25,6 +25,9 @@ public class FirstTabFragment extends Fragment
     Switch muteUnmute;
     EditText editTextSpeak;
 
+    private static final String splitCharacter = "@";
+
+
     public FirstTabFragment()
     {
 
@@ -79,7 +82,7 @@ public class FirstTabFragment extends Fragment
             @Override
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-                sendMessage("2@"+(65535 * progressValue)/100);
+                sendMessage("2"+splitCharacter+(65535 * progressValue)/100);
             }
         });
 
@@ -89,7 +92,7 @@ public class FirstTabFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                sendMessage("3@");
+                sendMessage("3"+splitCharacter);
             }
         });
 
@@ -101,7 +104,7 @@ public class FirstTabFragment extends Fragment
             {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
                 {
-                    sendMessage("7@"+editTextSpeak.getText().toString());
+                    sendMessage("7"+splitCharacter+editTextSpeak.getText().toString());
                     return true;
                 }
                 return false;
