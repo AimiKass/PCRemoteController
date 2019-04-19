@@ -16,14 +16,14 @@
         android:text="Monitors :"
         android:textAlignment="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/switch2"
+        app:layout_constraintEnd_toStartOf="@+id/switchMonitorOnOff"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.15" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/switchMonitorOnOff"
         android:layout_width="150dp"
         android:layout_height="66dp"
         android:layout_marginTop="8dp"
@@ -39,7 +39,7 @@
         app:layout_constraintVertical_bias="0.11" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/editTextMinTillMonOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
@@ -51,30 +51,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.243" />
+        app:layout_constraintVertical_bias="0.243"/>
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/shutdownBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginBottom="24dp"
         android:text="ShutDown"
-        app:layout_constraintBottom_toTopOf="@+id/editText7"
+        app:layout_constraintBottom_toTopOf="@+id/editTextMinTillPCOff"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button10"
+        android:id="@+id/restartBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="80dp"
         android:layout_marginBottom="24dp"
         android:text="Restart"
-        app:layout_constraintBottom_toTopOf="@+id/editText7"
+        app:layout_constraintBottom_toTopOf="@+id/editTextMinTillPCOff"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/editTextMinTillPCOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
