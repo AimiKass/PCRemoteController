@@ -109,7 +109,7 @@ public class SecondTabFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                sendMessage("12"+splitCharacter);
+                sendMessage("10"+splitCharacter);
             }
         });
 
