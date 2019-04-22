@@ -1,5 +1,6 @@
 package com.example.pcremcont.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.pcremcont.R;
+import com.example.pcremcont.SecondaryFunctions.Vibration;
 import com.example.pcremcont.portCommunicator.SendToServer;
 
 public class SettingsActivity extends AppCompatActivity
@@ -34,6 +36,8 @@ public class SettingsActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 sendMessage("0"+splitCharacter);
+                Vibration vibration = new Vibration();
+                vibration.effect(new long[]{0, 100, 0}, new int[]{0, 50, 0},getSystemService(Context.VIBRATOR_SERVICE));
             }
         });
 

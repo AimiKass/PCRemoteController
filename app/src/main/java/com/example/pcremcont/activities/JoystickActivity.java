@@ -121,9 +121,6 @@ public class JoystickActivity extends AppCompatActivity
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event)
             {
-                System.out.println(v);
-                System.out.println(keyCode);
-                System.out.println(event);
                 if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == 1 && useOnlyBackspaceIs )
                 {
                     sendMessage("17"+splitCharacter+"0x08");

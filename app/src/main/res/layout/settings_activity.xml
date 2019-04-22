@@ -13,10 +13,10 @@
         <Button
             android:id="@+id/close_server_btn"
             android:layout_width="232dp"
-            android:layout_height="73dp"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="101dp"
             android:background="@color/colorAccent"
             android:stateListAnimator="@android:anim/fade_out"
             android:text="@string/close_server"
@@ -24,34 +24,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextWithPathServerIsRunning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="95dp"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="PathServerIsRunning"
-            android:inputType="textMultiLine"
-            android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextWithPort" />
 
         <EditText
             android:id="@+id/editTextWithPort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
-            android:layout_marginTop="62dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="170dp"
+            android:layout_marginBottom="278dp"
             android:ems="10"
-            android:hint="@string/port"
+            android:hint="Port (UnderConst)"
             android:inputType="textPersonName"
             android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/close_server_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextWithPathServerIsRunning" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
