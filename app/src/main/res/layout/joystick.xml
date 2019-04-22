@@ -46,10 +46,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="74dp"
         android:ems="10"
-        android:hint="Keyboard !"
-        android:inputType="textEmailAddress"
+        android:hint="Keyboard ! (Disable Autocomplete)"
+        android:inputType="textPersonName"
         android:textAlignment="center" />
 
 </RelativeLayout>
