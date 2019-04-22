@@ -8,6 +8,7 @@
 From your (android) phone now you can:
 - move your cursor
 - left,right click
+- keyboard 
 - configure your computers volume
 - mute , unmute
 - close your monitor
