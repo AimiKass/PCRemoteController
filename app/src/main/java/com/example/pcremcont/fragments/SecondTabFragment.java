@@ -1,5 +1,7 @@
 package com.example.pcremcont.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -23,6 +24,12 @@ public class SecondTabFragment extends Fragment
     Switch switcherMonitorsOnOff;
     EditText editTextMinTillMonOff , editTextMinTillPCOff;
     Button shutdownBtn , restartBtn;
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
+
+    private static final String KEY_FOR_PORT_NUMBER = "PORT_NUMBER";
+    private static final String KEY_FOR_IP_ADDRESS = "IP_ADDRESS";
+    private static final String KEY_FOR_SHARED_PREFERENCE = "MyPrefs";
 
     private static final String splitCharacter = "@";
 
@@ -52,6 +59,7 @@ public class SecondTabFragment extends Fragment
         shutdownBtn = view.findViewById(R.id.shutdownBtn);
         restartBtn = view.findViewById(R.id.restartBtn);
 
+        pref = getContext().getSharedPreferences(KEY_FOR_SHARED_PREFERENCE, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -129,6 +137,6 @@ public class SecondTabFragment extends Fragment
     private void sendMessage(String msg)
     {
         SendToServer messageSender = new SendToServer();
-        messageSender.execute(msg);
+        messageSender.execute(msg,pref.getString(KEY_FOR_PORT_NUMBER, ""),pref.getString(KEY_FOR_IP_ADDRESS, ""));
     }
 }

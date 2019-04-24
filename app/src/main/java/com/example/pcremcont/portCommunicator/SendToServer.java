@@ -4,21 +4,26 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
-public class SendToServer extends AsyncTask<String,Void,Void>
+public class SendToServer extends AsyncTask<Object,Void,Void>
 {
     Socket socket;
     PrintWriter printWriter;
 
 
     @Override
-    protected Void doInBackground(String... message)
+    protected Void doInBackground(Object... message)
     {
-        String msg = message[0];
+        //[0]-> message , [1]-> port , [2]-> IP
+        String msg = (String) message[0];
         try {
 
-            socket = new Socket("192.168.1.3",7800);
+            SocketAddress socketAddress = new InetSocketAddress((String)message[2], Integer.parseInt((String) message[1]));
+            socket = new Socket();
+            socket.connect(socketAddress,1000);
             printWriter = new PrintWriter(socket.getOutputStream());
             printWriter.write(msg);
             printWriter.flush();
@@ -32,4 +37,6 @@ public class SendToServer extends AsyncTask<String,Void,Void>
 
         return null;
     }
+
+
 }

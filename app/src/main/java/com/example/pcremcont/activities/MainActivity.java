@@ -1,6 +1,9 @@
 package com.example.pcremcont.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -8,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -20,12 +24,21 @@ import com.example.pcremcont.fragments.SecondTabFragment;
 import com.example.pcremcont.fragments.ThirdTabFragment;
 import com.example.pcremcont.portCommunicator.SendToServer;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
+
+    private static final String KEY_FOR_PORT_NUMBER = "PORT_NUMBER";
+    private static final String KEY_FOR_IP_ADDRESS = "IP_ADDRESS";
+    private static final String KEY_FOR_SHARED_PREFERENCE = "MyPrefs";
+
 
 
     @Override
@@ -38,7 +51,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -49,10 +61,55 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        init();
+
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+
+        if(!pref.contains(KEY_FOR_PORT_NUMBER) || Objects.equals(pref.getString(KEY_FOR_PORT_NUMBER, ""), ""))
+        {
+            edit.putString(KEY_FOR_PORT_NUMBER, "7800");
+            edit.apply();
+        }
+
+        // TODO: 4/24/2019 create new class for that
+        if (!pref.contains(KEY_FOR_IP_ADDRESS) || Objects.equals(pref.getString(KEY_FOR_IP_ADDRESS, ""), ""))
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage("You Need To Configure some Settings")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            // FIRE ZE MISSILES!
+                        }
+                    })
+                    .setNegativeButton("Go to settings", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            goToSettingsActivity();
+                        }
+                    });
+            builder.show();
+        }
+
+    }
+
+    private void init()
+    {
+        pref = getSharedPreferences(KEY_FOR_SHARED_PREFERENCE, Context.MODE_PRIVATE);
+        edit = pref.edit();
 
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayoutId);
         viewPager = (ViewPager) findViewById(R.id.viewPagerId);
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.AddFragment(new FirstTabFragment(),"sound");
@@ -64,11 +121,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     @Override
     public void onBackPressed()
     {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -94,12 +153,17 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings)
         {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            goToSettingsActivity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToSettingsActivity()
+    {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -146,4 +210,6 @@ public class MainActivity extends AppCompatActivity
         SendToServer messageSender = new SendToServer();
         messageSender.execute(msg);
     }
+
+
 }
