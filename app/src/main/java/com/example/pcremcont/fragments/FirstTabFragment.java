@@ -1,5 +1,7 @@
 package com.example.pcremcont.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +26,12 @@ public class FirstTabFragment extends Fragment
     SeekBar seekBar;
     Switch muteUnmute;
     EditText editTextSpeak;
+    SharedPreferences pref;
+    SharedPreferences.Editor edit;
 
+    private static final String KEY_FOR_PORT_NUMBER = "PORT_NUMBER";
+    private static final String KEY_FOR_IP_ADDRESS = "IP_ADDRESS";
+    private static final String KEY_FOR_SHARED_PREFERENCE = "MyPrefs";
     private static final String splitCharacter = "@";
 
 
@@ -53,6 +60,8 @@ public class FirstTabFragment extends Fragment
         seekBar = view.findViewById(R.id.seekBar);
         muteUnmute = view.findViewById(R.id.muteUnmute);
         editTextSpeak = view.findViewById(R.id.editTextSpeak);
+
+        pref = getContext().getSharedPreferences(KEY_FOR_SHARED_PREFERENCE, Context.MODE_PRIVATE);
     }
 
 
@@ -143,7 +152,7 @@ public class FirstTabFragment extends Fragment
     private void sendMessage(String msg)
     {
         SendToServer messageSender = new SendToServer();
-        messageSender.execute(msg);
+        messageSender.execute(msg,pref.getString(KEY_FOR_PORT_NUMBER, ""),pref.getString(KEY_FOR_IP_ADDRESS, ""));
     }
 
 }
