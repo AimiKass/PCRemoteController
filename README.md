@@ -19,5 +19,24 @@ From your (android) phone now you can:
 
 
 ___
+## step 1.
+- Clone and run it on your IDE
 
+## step 2.
+- Run it in your **android** smartphone
 
+## step 3.
+- Go to setting 
+
+<img src="https://github.com/AimiKass/PCRemoteController/blob/master/readMePhotos/mainPage.png" width="300">
+
+- And set your computer`s ip the server will running into and the port you want to work with
+
+<img src="https://github.com/AimiKass/PCRemoteController/blob/master/readMePhotos/settings.png" width="300">
+
+- Press save and now you only have to configure your [server settings](https://github.com/AimiKass/PCRemoteControllerServer)
+
+---
+---
+### If you want so save some time in the future [set a static IP address in your Windows machine](https://pureinfotech.com/set-static-ip-address-windows-10/)
+![alt text](https://github.com/AimiKass/PCRemoteController/blob/master/readMePhotos/ipProtocol.png)
