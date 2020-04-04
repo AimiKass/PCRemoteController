@@ -17,9 +17,9 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="(UnderConst)" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="(UnderConst)" />
+            android:id="@+id/connectionTest"
+            android:icon="@android:drawable/ic_menu_sort_by_size"
+            android:title="Connection Test" />
     </group>
 
     <item android:title="Communicate">
