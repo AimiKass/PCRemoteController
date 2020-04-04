@@ -1,8 +1,6 @@
 package com.example.pcremcont.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -13,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.pcremcont.R;
+import com.example.pcremcont.database.Database;
 import com.example.pcremcont.portCommunicator.SendToServer;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
@@ -23,24 +22,20 @@ public class JoystickActivity extends AppCompatActivity
     // TODO: 4/18/2019 add scroll wheel
     Button leftClickBtn , rightClickButton;
     EditText keyboard;
-    SharedPreferences pref;
-    SharedPreferences.Editor edit;
-
-    private static final String KEY_FOR_PORT_NUMBER = "PORT_NUMBER";
-    private static final String KEY_FOR_IP_ADDRESS = "IP_ADDRESS";
-    private static final String KEY_FOR_SHARED_PREFERENCE = "MyPrefs";
+    Database database;
     private static final String splitCharacter = "@";
     static boolean useOnlyBackspaceIs = false;
 
 
     private void init()
     {
+
+        database = new Database(getApplicationContext());
+
         leftClickBtn = findViewById(R.id.joystick_left_btn);
         rightClickButton = findViewById(R.id.joystick_right_btn);
         keyboard = findViewById(R.id.keyboard);
 
-        pref = getSharedPreferences(KEY_FOR_SHARED_PREFERENCE, Context.MODE_PRIVATE);
-        edit = pref.edit();
     }
 
 
@@ -146,6 +141,7 @@ public class JoystickActivity extends AppCompatActivity
     private void sendMessage(String msg)
     {
         SendToServer messageSender = new SendToServer();
-        messageSender.execute(msg,pref.getString(KEY_FOR_PORT_NUMBER, ""),pref.getString(KEY_FOR_IP_ADDRESS, ""));
+        messageSender.execute(msg,database.getPort(),database.getIP());
     }
+
 }

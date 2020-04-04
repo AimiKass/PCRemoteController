@@ -3,4 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent">
+
+
+    <Button
+        android:id="@+id/playPauseBtn"
+        android:layout_width="268dp"
+        android:layout_height="276dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/play_pause_button"
+        android:text="PLAY"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

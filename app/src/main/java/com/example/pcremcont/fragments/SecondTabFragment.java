@@ -1,7 +1,5 @@
 package com.example.pcremcont.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.example.pcremcont.R;
+import com.example.pcremcont.database.Database;
 import com.example.pcremcont.portCommunicator.SendToServer;
 
 public class SecondTabFragment extends Fragment
@@ -24,12 +23,8 @@ public class SecondTabFragment extends Fragment
     Switch switcherMonitorsOnOff;
     EditText editTextMinTillMonOff , editTextMinTillPCOff;
     Button shutdownBtn , restartBtn;
-    SharedPreferences pref;
-    SharedPreferences.Editor edit;
 
-    private static final String KEY_FOR_PORT_NUMBER = "PORT_NUMBER";
-    private static final String KEY_FOR_IP_ADDRESS = "IP_ADDRESS";
-    private static final String KEY_FOR_SHARED_PREFERENCE = "MyPrefs";
+    Database database;
 
     private static final String splitCharacter = "@";
 
@@ -53,19 +48,22 @@ public class SecondTabFragment extends Fragment
 
     private void init()
     {
+        database = new Database(getContext());
+
         switcherMonitorsOnOff = view.findViewById(R.id.switchMonitorOnOff);
         editTextMinTillMonOff = view.findViewById(R.id.editTextMinTillMonOff);
         editTextMinTillPCOff = view.findViewById(R.id.editTextMinTillPCOff);
         shutdownBtn = view.findViewById(R.id.shutdownBtn);
         restartBtn = view.findViewById(R.id.restartBtn);
-
-        pref = getContext().getSharedPreferences(KEY_FOR_SHARED_PREFERENCE, Context.MODE_PRIVATE);
     }
 
     @Override
     public void onStart()
     {
+
         super.onStart();
+
+
 
         switcherMonitorsOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -137,6 +135,6 @@ public class SecondTabFragment extends Fragment
     private void sendMessage(String msg)
     {
         SendToServer messageSender = new SendToServer();
-        messageSender.execute(msg,pref.getString(KEY_FOR_PORT_NUMBER, ""),pref.getString(KEY_FOR_IP_ADDRESS, ""));
+        messageSender.execute(msg,database.getPort(),database.getIP());
     }
 }

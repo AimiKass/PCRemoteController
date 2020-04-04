@@ -1,9 +1,7 @@
 package com.example.pcremcont.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -16,15 +14,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.pcremcont.R;
 import com.example.pcremcont.adapters.ViewPagerAdapter;
+import com.example.pcremcont.database.Database;
 import com.example.pcremcont.fragments.FirstTabFragment;
 import com.example.pcremcont.fragments.SecondTabFragment;
 import com.example.pcremcont.fragments.ThirdTabFragment;
+import com.example.pcremcont.portCommunicator.GetServersVerification;
 import com.example.pcremcont.portCommunicator.SendToServer;
+import com.example.pcremcont.checkPermissions.Permission;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -32,13 +35,7 @@ public class MainActivity extends AppCompatActivity
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    SharedPreferences pref;
-    SharedPreferences.Editor edit;
-
-    private static final String KEY_FOR_PORT_NUMBER = "PORT_NUMBER";
-    private static final String KEY_FOR_IP_ADDRESS = "IP_ADDRESS";
-    private static final String KEY_FOR_SHARED_PREFERENCE = "MyPrefs";
-
+    Database database;
 
 
     @Override
@@ -62,7 +59,6 @@ public class MainActivity extends AppCompatActivity
 
 
         init();
-
     }
 
     @Override
@@ -71,14 +67,18 @@ public class MainActivity extends AppCompatActivity
         super.onStart();
 
 
-        if(!pref.contains(KEY_FOR_PORT_NUMBER) || Objects.equals(pref.getString(KEY_FOR_PORT_NUMBER, ""), ""))
+        Permission permission = new Permission();
+        permission.forRecordAudio(this);
+
+
+
+        if(!database.portExist() || Objects.equals(database.getPort(), ""))
         {
-            edit.putString(KEY_FOR_PORT_NUMBER, "7800");
-            edit.apply();
+            database.setPort("7800");
         }
 
-        // TODO: 4/24/2019 create new class for that
-        if (!pref.contains(KEY_FOR_IP_ADDRESS) || Objects.equals(pref.getString(KEY_FOR_IP_ADDRESS, ""), ""))
+
+        if (!database.ipExist() || Objects.equals(database.getIP(), ""))
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setMessage("You Need To Configure some Settings")
@@ -103,9 +103,7 @@ public class MainActivity extends AppCompatActivity
 
     private void init()
     {
-        pref = getSharedPreferences(KEY_FOR_SHARED_PREFERENCE, Context.MODE_PRIVATE);
-        edit = pref.edit();
-
+        database = new Database(getApplicationContext());
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayoutId);
         viewPager = (ViewPager) findViewById(R.id.viewPagerId);
@@ -114,7 +112,7 @@ public class MainActivity extends AppCompatActivity
 
         adapter.AddFragment(new FirstTabFragment(),"sound");
         adapter.AddFragment(new SecondTabFragment(),"set_on/off");
-        adapter.AddFragment(new ThirdTabFragment(),"(Under_const)");
+        adapter.AddFragment(new ThirdTabFragment(),"Sen Voice");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -186,8 +184,31 @@ public class MainActivity extends AppCompatActivity
         {
 
         }
-        else if (id == R.id.nav_manage)
+        else if (id == R.id.connectionTest)
         {
+            GetServersVerification getServersVer = new GetServersVerification();
+            Toast toast ;
+            String toastMsg;
+            String verMsg;
+
+            try {
+
+                verMsg = getServersVer.execute("19",database.getPort(),database.getIP()).get();
+
+                if (verMsg == null)
+                    toastMsg = "Connection failed";
+                else if (verMsg.equals("697"))
+                    toastMsg = "You are connected!";
+                else
+                    toastMsg ="Something went wrong";
+
+            } catch (ExecutionException | InterruptedException e)
+            {
+                toastMsg = "Something went wrong";
+            }
+
+            toast = Toast.makeText(this,toastMsg,Toast.LENGTH_LONG);
+            toast.show();
 
         }
         else if (id == R.id.nav_share)
@@ -208,8 +229,7 @@ public class MainActivity extends AppCompatActivity
     private void sendMessage(String msg)
     {
         SendToServer messageSender = new SendToServer();
-        messageSender.execute(msg);
+        messageSender.execute(msg,database.getPort(),database.getIP());
     }
-
 
 }

@@ -1,7 +1,5 @@
 package com.example.pcremcont.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +14,11 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 
 import com.example.pcremcont.R;
+import com.example.pcremcont.database.Database;
+import com.example.pcremcont.portCommunicator.GetSystemVolume;
 import com.example.pcremcont.portCommunicator.SendToServer;
+
+import java.util.concurrent.ExecutionException;
 
 public class FirstTabFragment extends Fragment
 {
@@ -26,12 +28,9 @@ public class FirstTabFragment extends Fragment
     SeekBar seekBar;
     Switch muteUnmute;
     EditText editTextSpeak;
-    SharedPreferences pref;
-    SharedPreferences.Editor edit;
+    Database database;
 
-    private static final String KEY_FOR_PORT_NUMBER = "PORT_NUMBER";
-    private static final String KEY_FOR_IP_ADDRESS = "IP_ADDRESS";
-    private static final String KEY_FOR_SHARED_PREFERENCE = "MyPrefs";
+
     private static final String splitCharacter = "@";
 
 
@@ -60,27 +59,28 @@ public class FirstTabFragment extends Fragment
         seekBar = view.findViewById(R.id.seekBar);
         muteUnmute = view.findViewById(R.id.muteUnmute);
         editTextSpeak = view.findViewById(R.id.editTextSpeak);
+        database = new Database(getContext());
 
-        pref = getContext().getSharedPreferences(KEY_FOR_SHARED_PREFERENCE, Context.MODE_PRIVATE);
     }
 
 
     @Override
     public void onStart()
     {
+
         super.onStart();
 
+
+        setSeekBarProgress();
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
 
-            int progressValue;
-
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
             {
-                progressValue = progress;
+                // TODO: 3/23/2020 change somehow the progress frequency in order to prevent crashes of frequent requests or copy paste the code to onStopTrackingTouch function
+                sendMessage("2"+splitCharacter+(65535 * progress)/100);
             }
 
             @Override
@@ -91,7 +91,6 @@ public class FirstTabFragment extends Fragment
             @Override
             public void onStopTrackingTouch(SeekBar seekBar)
             {
-                sendMessage("2"+splitCharacter+(65535 * progressValue)/100);
             }
         });
 
@@ -146,13 +145,26 @@ public class FirstTabFragment extends Fragment
 
     }
 
+    /**
+     * initialize the seekBar by getting the volume status from the server
+     */
+    public void setSeekBarProgress()
+    {
+        // TODO: 3/18/2020 check the refresh ratio . It is changing every two fragments.
+        GetSystemVolume systemVolume = new GetSystemVolume();
 
+        try {
+            seekBar.setProgress(systemVolume.execute("18",database.getPort(),database.getIP()).get());
+        } catch (ExecutionException | InterruptedException e)
+        {
+            seekBar.setProgress(0);
+        }
+    }
 
 
     private void sendMessage(String msg)
     {
         SendToServer messageSender = new SendToServer();
-        messageSender.execute(msg,pref.getString(KEY_FOR_PORT_NUMBER, ""),pref.getString(KEY_FOR_IP_ADDRESS, ""));
+        messageSender.execute(msg,database.getPort(),database.getIP());
     }
-
 }

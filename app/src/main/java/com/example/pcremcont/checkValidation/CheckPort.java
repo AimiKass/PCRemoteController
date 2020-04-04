@@ -1,4 +1,4 @@
-package com.example.pcremcont.validationCheck;
+package com.example.pcremcont.checkValidation;
 
 public class CheckPort
 {

@@ -1,7 +1,6 @@
 package com.example.pcremcont.activities;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.pcremcont.R;
-import com.example.pcremcont.SecondaryFunctions.Vibration;
+import com.example.pcremcont.secondaryFunctions.Vibration;
+import com.example.pcremcont.database.Database;
 import com.example.pcremcont.portCommunicator.SendToServer;
 
 public class SettingsActivity extends AppCompatActivity
@@ -19,14 +19,10 @@ public class SettingsActivity extends AppCompatActivity
     ImageButton returnBtn;
     Button closeServerBtn, saveBtn;
     EditText ipEditText, portEditText;
-    SharedPreferences pref;
-    SharedPreferences.Editor edit;
+    Database database;
 
 
     private static final String splitCharacter = "@";
-    private static final String KEY_FOR_PORT_NUMBER = "PORT_NUMBER";
-    private static final String KEY_FOR_IP_ADDRESS = "IP_ADDRESS";
-    private static final String KEY_FOR_SHARED_PREFERENCE = "MyPrefs";
 
 
 
@@ -38,8 +34,8 @@ public class SettingsActivity extends AppCompatActivity
 
         init();
 
-        portEditText.setText(pref.getString(KEY_FOR_PORT_NUMBER, ""));
-        ipEditText.setText(pref.getString(KEY_FOR_IP_ADDRESS, ""));
+        portEditText.setText(database.getPort());
+        ipEditText.setText(database.getIP());
 
 
 
@@ -68,10 +64,9 @@ public class SettingsActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // TODO: 4/23/2019 #1 check validity !!!!!
-                edit.putString(KEY_FOR_PORT_NUMBER, portEditText.getText().toString());
-                edit.putString(KEY_FOR_IP_ADDRESS, ipEditText.getText().toString());
-                edit.apply();
+                // TODO: 4/23/2019 #1 check validity and close the activity if everything is ok
+                database.setIP(ipEditText.getText().toString());
+                database.setPort(portEditText.getText().toString());
 
             }
         });
@@ -79,8 +74,7 @@ public class SettingsActivity extends AppCompatActivity
 
     private void init()
     {
-        pref = getSharedPreferences(KEY_FOR_SHARED_PREFERENCE, Context.MODE_PRIVATE);
-        edit = pref.edit();
+        database = new Database(getApplicationContext());
 
         returnBtn  = findViewById(R.id.setting_return_button);
         closeServerBtn = findViewById(R.id.close_server_btn);
@@ -94,8 +88,7 @@ public class SettingsActivity extends AppCompatActivity
     private void sendMessage(String msg)
     {
         SendToServer messageSender = new SendToServer();
-        System.out.println(msg);
-        messageSender.execute(msg,pref.getString(KEY_FOR_PORT_NUMBER, ""),pref.getString(KEY_FOR_IP_ADDRESS, ""));
+        messageSender.execute(msg,database.getPort(),database.getIP());
     }
 
 }

@@ -2,20 +2,23 @@ package com.example.pcremcont.portCommunicator;
 
 import android.os.AsyncTask;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class SendToServer extends AsyncTask<Object,Void,Void>
+public class GetServersVerification extends AsyncTask<Object,String,String>
 {
     Socket socket;
     PrintWriter printWriter;
+    String verificationMsg ;
 
 
     @Override
-    protected Void doInBackground(Object... message)
+    protected String doInBackground(Object... message)
     {
         //[0]-> message , [1]-> port , [2]-> IP
         String msg = (String) message[0];
@@ -27,6 +30,11 @@ public class SendToServer extends AsyncTask<Object,Void,Void>
             printWriter = new PrintWriter(socket.getOutputStream());
             printWriter.println(msg);
             printWriter.flush();
+
+            InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            verificationMsg = bufferedReader.readLine();
+
             printWriter.close();
             socket.close();
 
@@ -35,8 +43,7 @@ public class SendToServer extends AsyncTask<Object,Void,Void>
             e.printStackTrace();
         }
 
-        return null;
+
+        return verificationMsg;
     }
-
-
 }
