@@ -1,5 +1,6 @@
 package com.example.pcremcont.fragments;
 
+import android.annotation.SuppressLint;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -9,11 +10,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.example.pcremcont.R;
+import com.example.pcremcont.animations.MyBounceInterpolator;
 import com.example.pcremcont.database.Database;
 import com.example.pcremcont.portCommunicator.SendToServer;
 
@@ -32,7 +37,7 @@ public class ThirdTabFragment extends Fragment
     AudioRecord recorder;
     Database database;
 
-    private int sampleRate = 16000  ;
+    private int sampleRate = 16000;
     private int channelConfig = AudioFormat.CHANNEL_IN_MONO;
     private int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
     int minBufSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, audioFormat);
@@ -57,15 +62,17 @@ public class ThirdTabFragment extends Fragment
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     private void init()
     {
         database = new Database(getContext());
 
         sendVoiceBtn = view.findViewById(R.id.playPauseBtn);
-       // sendVoiceBtn.setText("PLAY"); // TODO: 3/23/2020 if you start playing , change tab and then return back the text from pause resets to play again and you have to press it twice in order to stop
+        sendVoiceBtn.setText("PRESS AND HOLD");
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onStart()
     {
@@ -74,27 +81,41 @@ public class ThirdTabFragment extends Fragment
 
         super.onStart();
 
-        sendVoiceBtn.setOnClickListener(new View.OnClickListener()
+        sendVoiceBtn.setOnTouchListener(new View.OnTouchListener()
         {
-            @Override
-            public void onClick(View v)
-            {
 
-                System.out.println("BUTTON PRESSED");
-                if (sendVoiceBtn.getText().equals("PLAY"))
+            @SuppressLint("SetTextI18n")
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if (event.getAction() == MotionEvent.ACTION_DOWN)
                 {
+                    // Pressed
+                    sendVoiceBtn.setText("RELEASE TO STOP");
+                    final Animation btnAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.bounce);
+                    sendVoiceBtn.startAnimation(btnAnimation);
+
                     status = true;
                     sendMessage("20");
-                    sendVoiceBtn.setText("STOP");
-                }else
+
+                    startStreaming();
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP)
                 {
+                    // Released
+                    sendVoiceBtn.setText("PRESS AND HOLD");
+                    final Animation btnAnimation = AnimationUtils.loadAnimation(getContext(),R.anim.bounce);
+                    MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+
+                    btnAnimation.setInterpolator(interpolator);
+                    sendVoiceBtn.startAnimation(btnAnimation);
+
                     status = false;
                     sendMessage("201");
-                    sendVoiceBtn.setText("PLAY");
-                }
-                startStreaming();
-            }
 
+                }
+                return true;
+            }
         });
 
 
